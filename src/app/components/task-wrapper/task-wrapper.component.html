@@ -1,0 +1,52 @@
+<main class="container">
+  <mat-form-field>
+    <mat-label>Search</mat-label>
+    <input matInput type="text" [(ngModel)]="search" [placeholder]="placeholderSearch()">
+    @if (search()) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch(); resetPageIndex()">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Filter by</mat-label>
+    <mat-select [(ngModel)]="selectedSearchType">
+      @for (searchType of searchTypes; track searchType) {
+        <mat-option [value]="searchType.value" (click)="setSearchType(searchType)">{{searchType.viewValue}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if(filteredList().length > 0) {
+
+    @if(!loading){
+      @for (item of filteredList(); track $index) {
+        <section>
+          <app-task-card [task]="item"></app-task-card>
+          <mat-card-actions>
+            <button mat-button (click)="edit(item)">Edit</button>
+            <button mat-button (click)="deleteTask(item)">Delete</button>
+          </mat-card-actions>
+        </section>
+      }
+
+      <mat-paginator #paginator
+        (page)="handlePageEvent($event)"
+        [length]="pageLength()"
+        [pageSize]="pageSize()"
+        [disabled]="disabled"
+        [showFirstLastButtons]="showFirstLastButtons"
+        [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+        [hidePageSize]="hidePageSize"
+        [pageIndex]="pageIndex()"
+        aria-label="Select a task">
+      </mat-paginator>
+    } @else {
+      <mat-spinner></mat-spinner>
+    }
+  } @else {
+    <div>No tasks found.</div>
+  }
+
+  <app-task-edit [task]="editTask" (updateTasks)="updateTasks($event)"/>
+</main>

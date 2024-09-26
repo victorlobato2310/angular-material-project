@@ -1,0 +1,16 @@
+@if(show){
+  <form [formGroup]="form" class="position-fixed top-50 start-50 translate-middle bg-light border rounded d-flex flex-column p-5 mt-3 mb-3">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput id="name" type="text" formControlName="name">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <textarea matInput id="description" type="text" formControlName="description"></textarea>
+    </mat-form-field>
+    <mat-card-actions class="d-flex justify-content-end align-items-end">
+      <button mat-button (click)="cancel()">Cancel</button>
+      <button mat-button (click)="editTask()">Edit</button>
+    </mat-card-actions>
+  </form>
+}
